@@ -1,6 +1,6 @@
 import {Navigate}  from 'react-router-dom'
-import Admin from '../pages/Admin'
-import Login from '../pages/Login'
+import Admin from '../container/Admin'
+import Login from '../container/Login'
 
 const routes = [
     {

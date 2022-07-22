@@ -1,17 +1,27 @@
 import React from "react";
-import {useNavigate} from 'react-router-dom'
+import {useNavigate, Navigate} from 'react-router-dom'
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Form, Input, message } from "antd";
+import {connect} from 'react-redux'
+import {saveUserInfo} from '../../redux/actions/login_action'
 import "./login.less";
 import logo from "./images/logo.png";
 import { reqLogin } from "../../api";
 
 
-export default function Login(props) {
+function Login(props) {
+  // console.log("Login--props",props)
 
   // 返回一个函数实现编程式导航
   const navigate = useNavigate()
-  
+
+  const {isLogin} = props.userInfo
+
+  // 当前已经登录，强制跳转到Admin页面
+  if(isLogin){
+    return <Navigate to="/admin" replace={true} />
+  }
+ 
   // 解构出antd表单组件中的每一项
   const {Item} = Form
 
@@ -44,7 +54,7 @@ export default function Login(props) {
   2022.7.19理解：输入用户名和密码不合法时，提交方法不会执行，且不需要阻止默认提交 
   */
   const doLogin = async (values) => {
-    console.log('Received values of form: ', values);
+    // console.log('Received values of form: ', values);
     
     // 编码人员只管成功，失败在myAxios中的响应拦截器已封装
     let result =await reqLogin(values)
@@ -55,16 +65,18 @@ export default function Login(props) {
     else if(status === 0){//成功
       message.success('登录成功',2)
       // 使用useNavigate进行路由跳转
-      navigate('/admin',{
-        replace:true,
-      })
+      navigate('/admin',{replace:true,})
+
+      // 此处把data交给redux管理
+      props.saveUserInfo(data)
     }
     else if(status === 1){//失败
       message.warning(msg)
     }
-    
-    console.log("成功了",result);
+
   };
+
+
 
   return (
     <div id="login" className="login">
@@ -127,3 +139,8 @@ export default function Login(props) {
     </div>
   );
 }
+
+export default connect (
+  state =>({userInfo:state.userInfo}),
+  {saveUserInfo}
+)(Login)
