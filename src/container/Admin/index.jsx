@@ -1,36 +1,32 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import {Navigate} from 'react-router-dom'
-import {Button} from 'antd'
-import {deleteUserInfo} from '../../redux/actions/login_action'
+import React from "react";
+import { connect } from "react-redux";
+import {Outlet} from 'react-router-dom'
+import { deleteUserInfo } from "../../redux/actions/login_action";
+import check_login from "../check_login/check_login";
+import "./css/admin.less";
+import Header from "./Header/Header";
+import { Layout } from "antd";
+import LeftNav from "./LeftNav/LeftNav";
+
+const { Footer,Sider, Content } = Layout;
 
 function Admin(props) {
-
-  // console.log("Admin--props",props);
-
-  // 删除redux，localStorage中保存的用户数据，修改了redux数据会自动更新页面
-  const loginout = ()=>{
-    // console.log("退出登录");
-    props.deleteUserInfo()
-  }
-
-  const {isLogin} = props.userInfo
-
-  // 当前没有登录时，强制跳转到Login页面
-  if(!isLogin){
-    // console.log("当前没有登录时，强制跳转到Login页面");
-    return <Navigate to="/login" replace={true}/>
-  }
+  // console.log("Admin--props", props);
 
   return (
-    <div>
-      <h1>hello,{props.userInfo.user.username}</h1>
-      <Button type='primary' onClick={loginout}>退出登录</Button>
-    </div>
-  )
+    <Layout className="admin">
+      <Sider>
+        <LeftNav />
+      </Sider>
+      <Layout>
+        <Header />
+        <Content className="content"><Outlet/></Content>
+        <Footer className="footer">推荐使用谷歌浏览器，以便获得最好效果</Footer>
+      </Layout>
+    </Layout>
+  );
 }
 
-export default connect(
-  state=>({userInfo:state.userInfo}),
-  {deleteUserInfo}
-)(Admin)
+export default connect((state) => ({ userInfo: state.userInfo }), {
+  deleteUserInfo,
+})(check_login(Admin));

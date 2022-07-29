@@ -1,11 +1,12 @@
 import React from "react";
-import {useNavigate, Navigate} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Form, Input, message } from "antd";
 import {connect} from 'react-redux'
+import check_login from "../check_login/check_login";
 import {saveUserInfo} from '../../redux/actions/login_action'
 import "./login.less";
-import logo from "./images/logo.png";
+import logo from "../../assets/images/logo.png";
 import { reqLogin } from "../../api";
 
 
@@ -14,13 +15,6 @@ function Login(props) {
 
   // 返回一个函数实现编程式导航
   const navigate = useNavigate()
-
-  const {isLogin} = props.userInfo
-
-  // 当前已经登录，强制跳转到Admin页面
-  if(isLogin){
-    return <Navigate to="/admin" replace={true} />
-  }
  
   // 解构出antd表单组件中的每一项
   const {Item} = Form
@@ -143,4 +137,4 @@ function Login(props) {
 export default connect (
   state =>({userInfo:state.userInfo}),
   {saveUserInfo}
-)(Login)
+)(check_login(Login))

@@ -1,0 +1,53 @@
+.header{
+    color: black;
+    background-color: white;
+}
+.header-top{
+    height: 40px;
+    border-bottom: 1px solid #1DA57A;
+    text-align: right;
+    line-height: 40px;
+    padding-right: 20px;
+    .name{
+        margin-left: 10px;
+        // margin-right: -10px;
+    }
+}
+.header-bottom{
+    height: 40px;
+    display: flex;
+    line-height: 40px;
+    padding-right: 20px;
+    .header-bottom-left{
+        position: relative;//relative与absolute一对
+        text-align: center;
+        font-size: 20px;
+        width: 25%;
+        &::after{
+            position: absolute;
+            top: 40px;
+            left: 50%;//相对于父元素的50%
+            transform: translateX(-50%);//相对于自身的50%
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-top: 20px solid white;//显示向下的箭头
+            border-bottom:  20px solid transparent;//transparent为透明
+            border-left:  20px solid transparent;
+            border-right:  20px solid transparent;
+        }
+    }
+    .header-bottom-right{
+        width: 75%;
+        text-align: right;
+        img{
+            width: 30px;
+            height: 20px;
+            margin: 0 10px;
+        }
+        .weather-text{
+            margin:0px 10px;
+        }
+    }
+}

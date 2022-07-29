@@ -359,7 +359,7 @@
     "@babel/helper-plugin-utils" "^7.18.6"
     "@babel/plugin-syntax-class-static-block" "^7.14.5"
 
-"@babel/plugin-proposal-decorators@^7.16.4":
+"@babel/plugin-proposal-decorators@^7.16.4", "@babel/plugin-proposal-decorators@^7.18.9":
   version "7.18.9"
   resolved "https://registry.npmmirror.com/@babel/plugin-proposal-decorators/-/plugin-proposal-decorators-7.18.9.tgz#d09d41ffc74af8499d2ac706ed0dbd5474711665"
   integrity sha512-KD7zDNaD14CRpjQjVbV4EnH9lsKYlcpUrhZH37ei2IY+AlXrfAPy5pTmRUE4X6X1k8EsKXPraykxeaogqQvSGA==
@@ -3654,7 +3654,12 @@ dayjs@1.x:
   resolved "https://registry.npmmirror.com/dayjs/-/dayjs-1.11.3.tgz#4754eb694a624057b9ad2224b67b15d552589258"
   integrity sha512-xxwlswWOlGhzgQ4TKzASQkUhqERI3egRNqgV4ScR8wlANA/A9tZ7miXa44vTTKEq5l7vWoL5G57bG3zA+Kow0A==
 
-debug@2.6.9, debug@^2.6.0, debug@^2.6.9:
+dayjs@^1.11.4:
+  version "1.11.4"
+  resolved "https://registry.npmmirror.com/dayjs/-/dayjs-1.11.4.tgz#3b3c10ca378140d8917e06ebc13a4922af4f433e"
+  integrity sha512-Zj/lPM5hOvQ1Bf7uAvewDaUcsJoI6JmNqmHhHl3nyumwe0XHwt8sWdOVAPACJzCebL8gQCi+K49w7iKWnGwX9g==
+
+debug@2.6.9, debug@^2.1.3, debug@^2.6.0, debug@^2.6.9:
   version "2.6.9"
   resolved "https://registry.npmmirror.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
   integrity sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==
@@ -6009,6 +6014,13 @@ jsonfile@^6.0.1:
     universalify "^2.0.0"
   optionalDependencies:
     graceful-fs "^4.1.6"
+
+jsonp@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.npmmirror.com/jsonp/-/jsonp-0.2.1.tgz#a65b4fa0f10bda719a05441ea7b94c55f3e15bae"
+  integrity sha512-pfog5gdDxPdV4eP7Kg87M8/bHgshlZ5pybl+yKxAnCZ5O7lCIn7Ixydj03wOlnDQesky2BPyA91SQ+5Y/mNwzw==
+  dependencies:
+    debug "^2.1.3"
 
 jsonpointer@^5.0.0:
   version "5.0.1"
@@ -8408,6 +8420,11 @@ schema-utils@^4.0.0:
     ajv "^8.8.0"
     ajv-formats "^2.1.1"
     ajv-keywords "^5.0.0"
+
+screenfull@^6.0.2:
+  version "6.0.2"
+  resolved "https://registry.npmmirror.com/screenfull/-/screenfull-6.0.2.tgz#3dbe4b8c4f8f49fb8e33caa8f69d0bca730ab238"
+  integrity sha512-AQdy8s4WhNvUZ6P8F6PB21tSPIYKniic+Ogx0AacBMjKP1GUHN2E9URxQHtCusiwxudnCKkdy4GrHXPPJSkCCw==
 
 scroll-into-view-if-needed@^2.2.25:
   version "2.2.29"
