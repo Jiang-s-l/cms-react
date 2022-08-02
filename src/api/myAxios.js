@@ -4,6 +4,8 @@ import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 // import qs from 'querystring'//qs.stringify()将对象 序列化成URL的形式，以&进行拼接
 import { BASE_URL } from "../config";
+// import store from '../redux/store'
+import {deleteUserInfo} from '../redux/actions/login_action'
 
 // axios请求的基本路径
 axios.defaults.baseURL = BASE_URL;
@@ -12,6 +14,12 @@ axios.defaults.baseURL = BASE_URL;
 axios.interceptors.request.use((config) => {
   // 进度条开始
   NProgress.start();
+
+  /* 如果有token */
+  // 1. 获取已保存的token
+  // let {token} = store.getState.userInfo
+  // 携带token
+  // if(token) config.headers.Authorization = 'atguigu_' + token
 
   /* let {data,method} = config
 
@@ -38,7 +46,14 @@ axios.interceptors.response.use(
     只要返回初始化promise对象，使用时既不走失败回调，也不走成功回调 */
   (error) => {
     NProgress.done();
-    message.error(`请求出错，请联系管理员(${error.message})`);
+    // 判断返回状态码是否为401,401为未授权
+    if(error.response.status === 401){
+      message.error('身份验证失败，请重新登录')
+      // 重新跳转到登录页面进行登录
+      StorageEvent.dispatch(deleteUserInfo())
+    }else{
+      message.error(`请求出错，请联系管理员(${error.message})`);
+    }
     return new Promise(() => {});
   }
 );
