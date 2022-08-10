@@ -4,16 +4,15 @@ import { PlusCircleOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { getCategoryListAsync } from "../../redux/actions/category_action";
 import { PAGE_SIZE } from "../../config";
-import { reqAddCategory,reqUpdateCategory } from "../../api";
+import { reqAddCategory, reqUpdateCategory } from "../../api";
 
 function Category(props) {
   const [isAdd, setIsAdd] = useState(false);
 
-  
   // 创建 Form 实例，用于管理所有数据状态
   const [form] = Form.useForm();
 
-  const [categoryId,setCategoryId] = useState('')
+  const [categoryId, setCategoryId] = useState("");
 
   // 获取分类列表
   const getCategoryList = () => {
@@ -38,11 +37,11 @@ function Category(props) {
             type="link"
             onClick={() => {
               console.log(item);
-              
+
               // console.log(e);
               setIsAdd(false);
               setIsModalVisible(true);
-              setCategoryId(item._id)
+              setCategoryId(item._id);
               form.setFieldsValue({
                 categoryName: item.name,
               });
@@ -63,23 +62,22 @@ function Category(props) {
     
   }; */
 
-
   const handleOk = () => {
     // 1.获取用户的输入
     form.validateFields().then(async (values) => {
       //输入信息验证正确
-      console.log(values,categoryId);
-      let result
-      if(isAdd){
+      console.log(values, categoryId);
+      let result;
+      if (isAdd) {
         result = await reqAddCategory(0, values.categoryName);
-      }else{
-        result = await reqUpdateCategory(categoryId,values.categoryName)
+      } else {
+        result = await reqUpdateCategory(categoryId, values.categoryName);
       }
       console.log(result);
       const { status, data, msg } = result;
       console.log(status, data, msg);
       if (status === 0) {
-        message.success(isAdd?"添加分类成功":"修改分类成功", 1);
+        message.success(isAdd ? "添加分类成功" : "修改分类成功", 1);
         getCategoryList();
         form.resetFields();
         setIsModalVisible(false);
@@ -131,10 +129,7 @@ function Category(props) {
         okText="确定"
         cancelText="取消"
       >
-        <Form
-          name="basic"
-          form={form}
-        >
+        <Form name="basic" form={form}>
           <Form.Item
             label="分类名称"
             name="categoryName"

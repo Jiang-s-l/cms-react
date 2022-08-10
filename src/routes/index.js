@@ -4,6 +4,8 @@ import Login from "../container/Login";
 import Home from "../components/Home/Home";
 import Category from "../container/Category/Category";
 import Product from "../container/Product/Product";
+import AddUpdate from "../container/Product/Add_update";
+import Detail from "../container/Product/Detail";
 import User from "../container/User/User";
 import Role from "../container/Role/Role";
 import Bar from "../container/Bar/Bar";
@@ -48,7 +50,20 @@ const routes = [
           },
           {
             path: "product",
-            element: <Product />,
+            children:[
+              {
+                path:'',
+                element: <Product />,
+              },
+              {
+                path:'add_update',
+                element:<AddUpdate/>
+              },
+              {
+                path:'detail/:id',
+                element:<Detail/>
+              }
+            ]
           },
         ],
       },

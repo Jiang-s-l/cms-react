@@ -51,6 +51,9 @@ function Header(props) {
 
   let { pathname } = useLocation();
   let menuKey = pathname.split("/").reverse()[0];
+  if(pathname.indexOf('/product') !== -1){
+    menuKey = 'product'
+  }
   // 获取导航标题信息
   const getTitle = (menuKey) => {
     console.log("-------导航标题--------",props.menuTitle);
