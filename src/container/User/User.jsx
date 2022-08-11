@@ -10,18 +10,20 @@ import {
   message,
   Select,
 } from "antd";
-import { PlusCircleOutlined } from "@ant-design/icons";
+import { PlusCircleOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { PAGE_SIZE } from "../../config";
-import { reqUserList,reqAddUser } from "../../api";
-
+import { reqUserList, reqAddUser, reqUpdateUser, reqDeleteUser } from "../../api";
+const { confirm } = Modal;
 const { Option } = Select;
 
 export default function User() {
-  const [isShowAdd, setIsShowAdd] = useState(false);
-  const [isShowUpdate, setIsShowUpdate] = useState(false);
+  const [isShowVisible, setisShowVisible] = useState(false);
+  const [oparetionType, setOparetionType] = useState("add");
   const [userList, setUserList] = useState([]);
   const [roleList, setRoleList] = useState([]);
+  // 用于更新时获取userId
+  const [userId, setUserId] = useState("");
 
   // 创建 Form 实例，用于管理所有数据状态
   const [form] = Form.useForm();
@@ -38,6 +40,20 @@ export default function User() {
       message.error(msg);
     }
   };
+
+  const getFormValidate = (item) => {
+    const { username, password, phone, email, role_id } = item;
+    console.log("表单初始化");
+    // 设置表单初始内容
+    form.setFieldsValue({
+      username,
+      password,
+      phone,
+      email,
+      role_id,
+    });
+  };
+
   const data = userList;
   const columns = [
     {
@@ -86,7 +102,11 @@ export default function User() {
           <Button
             type="link"
             onClick={() => {
-              console.log(item);
+              setOparetionType("update");
+              setisShowVisible(true);
+              setUserId(item._id);
+              console.log("点击了修改", oparetionType);
+              getFormValidate(item);
             }}
           >
             修改
@@ -96,6 +116,26 @@ export default function User() {
             danger
             onClick={() => {
               console.log(item);
+              confirm({
+                title: '删除用户',
+                icon: <ExclamationCircleOutlined />,
+                content: `是否删除用户${item.username}`,
+                okText:"确定",
+                cancelText:"取消",
+                async onOk() {
+                  console.log('OK');
+                  let result = await reqDeleteUser(item._id)
+                  const {status,msg} = result
+                  if(status === 0){
+                    message.success("删除用户成功")
+                    getUserList()
+                  }else message.error(msg)
+                },
+            
+                onCancel() {
+                  console.log('Cancel');
+                },
+              });
             }}
           >
             删除
@@ -109,21 +149,24 @@ export default function User() {
     // 1.获取用户的输入
     form.validateFields().then(async (values) => {
       //输入信息验证正确
-      console.log(values);
-      //调用接口，将数据存储到数据库 
+      // console.log(values);
+      //调用接口，将数据存储到数据库
       let result;
-      if (isShowAdd) {
+      if (oparetionType === "add") {
         result = await reqAddUser(values);
       } else {
-        // result = await reqUpdateCategory(categoryId, values.categoryName);
+        result = await reqUpdateUser(userId, values);
       }
-      console.log(result);
-      const { status, data, msg } = result;
-      console.log(status, data, msg);
+      // console.log(result);
+      const { status, msg } = result;
+      // console.log(status, data, msg);
       if (status === 0) {
-        message.success(isShowAdd ? "添加用户成功" : "修改分类成功", 1);
+        message.success(
+          oparetionType === "add" ? "添加用户成功" : "修改用户成功",
+          1
+        );
         getUserList();
-        setIsShowAdd(false)
+        setisShowVisible(false);
         form.resetFields();
       } else {
         message.error(msg, 1);
@@ -132,7 +175,7 @@ export default function User() {
   };
 
   const handleCancel = () => {
-    setIsShowAdd(false)
+    setisShowVisible(false);
     form.resetFields();
   };
 
@@ -144,7 +187,13 @@ export default function User() {
     <div>
       <Card
         extra={
-          <Button type="primary" onClick={() => setIsShowAdd(true)}>
+          <Button
+            type="primary"
+            onClick={() => {
+              setisShowVisible(true);
+              setOparetionType("add");
+            }}
+          >
             <PlusCircleOutlined />
             添加用户
           </Button>
@@ -159,8 +208,8 @@ export default function User() {
         />
       </Card>
       <Modal
-        title="添加用户"
-        visible={isShowAdd}
+        title={oparetionType === "add" ? "添加用户" : "修改用户"}
+        visible={isShowVisible}
         onOk={handleOk}
         onCancel={handleCancel}
         okText="确定"
@@ -194,7 +243,11 @@ export default function User() {
               },
             ]}
           >
-            <Input type='password' placeholder="请输入密码" />
+            <Input
+              type="password"
+              placeholder="请输入密码"
+              disabled={oparetionType === "add" ? false : true}
+            />
           </Form.Item>
           <Form.Item
             label="手机号码"
@@ -218,7 +271,7 @@ export default function User() {
               },
             ]}
           >
-            <Input type='email' placeholder="请输入邮箱" />
+            <Input type="email" placeholder="请输入邮箱" />
           </Form.Item>
           <Form.Item
             label="角色"
@@ -232,7 +285,11 @@ export default function User() {
           >
             <Select showSearch allowClear placeholder="请选择该用户所属角色">
               <Option value="">请选择一个角色</Option>
-              {roleList.map((item)=><Option key={item._id} value={item._id}>{item.name}</Option>)}
+              {roleList.map((item) => (
+                <Option key={item._id} value={item._id}>
+                  {item.name}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
         </Form>

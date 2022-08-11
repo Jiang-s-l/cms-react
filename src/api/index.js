@@ -95,4 +95,21 @@ export const reqUserList = () => myAxios.get("/manage/user/list");
 
 // 请求添加用户
 export const reqAddUser = (userObject) =>
-  myAxios.post("/manage/user/add", { ...userObject, _id: new Date().getTime() + Math.random().toString(36).substring(2), });
+  myAxios.post("/manage/user/add", {
+    ...userObject,
+    _id: new Date().getTime() + Math.random().toString(36).substring(2),
+  });
+
+// 请求修改用户
+export const reqUpdateUser = (userId, userObject) =>
+  myAxios.post("/manage/user/update", {
+    _id: userId,
+    username: userObject.username,
+    phone: userObject.phone,
+    email: userObject.email,
+    role_id: userObject.role_id,
+  });
+
+// 请求删除用户
+export const reqDeleteUser = (userId) =>
+  myAxios.post("/manage/user/delete", { userId });

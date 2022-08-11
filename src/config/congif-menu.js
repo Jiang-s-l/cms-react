@@ -18,7 +18,6 @@ function getItem(label, key, icon, children, type) {
   
 const items = [
     getItem("首页", "home", <HomeOutlined />),
-  
     getItem("商品", "prod_about", <AppstoreOutlined />, [
       getItem("分类管理", "category", <UnorderedListOutlined />),
       getItem("商品管理", "product", <ToolOutlined />),

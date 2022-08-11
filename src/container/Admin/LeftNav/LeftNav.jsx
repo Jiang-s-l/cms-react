@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Menu } from "antd";
+import { Menu, message } from "antd";
 import { connect } from "react-redux";
 import { saveMenuTitle } from "../../../redux/actions/menu_action";
 import "./left_nav.less";
@@ -20,26 +20,30 @@ function LeftNav(props) {
 
   openKey = pathname.split("/").splice(2);
 
-  const [menuAuthList, setMenuAuthList] = useState([]);
+  const [menuAuthList, setMenuAuthList] = useState(menuAllList);
 
   // 最后确定展示的菜单
   let finalMenuList = [];
+  let menuListAll = menuAllList
 
   useEffect(() => {
     // 获取授权的菜单，在此方法里将最后的值赋给finalMenuList
-    getAuthMenu(menuAllList);
-    setMenuAuthList(finalMenuList);
+    getAuthMenu(menuListAll);
+
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // 获取授权的菜单
-  const getAuthMenu = (menuAllList) => {
-    // 如果为admin用户有所有权限
+  const getAuthMenu = (menuList) => {
+    finalMenuList= []
+    // 如果为admin用户有所有权限,当前这里有问题，菜单不全，刷新后才全
     if (props.username === "admin") {
-      finalMenuList = menuAllList;
-      return;
+      finalMenuList = menuList;
+      setMenuAuthList(finalMenuList);
+      message.warning('需刷新页面才能显示正常',1)
+      return
     }
     // 不为admin用户，对所有菜单进行过滤，获取已授权菜单
-    finalMenuList = menuAllList.filter((menu) => {
+    finalMenuList = menuList.filter((menu) => {
       // 当前值没有children
       if (!menu.children) {
         // 当前值的key不存在授权菜单的数组中，返回false，将此值去掉
@@ -66,6 +70,7 @@ function LeftNav(props) {
       }
       return true;
     });
+    setMenuAuthList(finalMenuList);
   };
 
   const menuCLick = ({ key, keyPath }) => {
