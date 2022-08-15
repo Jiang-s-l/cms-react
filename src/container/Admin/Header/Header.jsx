@@ -10,7 +10,7 @@ import {
 import screenfull from "screenfull";
 import dayjs from "dayjs";
 import { deleteUserInfo } from "../../../redux/actions/login_action";
-import { saveMenuTitle } from "../../../redux/actions/menu_action";
+import { saveMenuTitle, deleteMenuTitle } from "../../../redux/actions/menu_action";
 import "./header.less";
 import { reqWeatherData } from "../../../api";
 import items from "../../../config/congif-menu";
@@ -108,6 +108,7 @@ function Header(props) {
         //点击确定，执行退出登录操作
         // console.log('OK');
         props.deleteUserInfo();
+        props.deleteMenuTitle();
       },
       onCancel() {
         // console.log('Cancel');
@@ -148,5 +149,5 @@ function Header(props) {
 }
 
 export default connect((state) => ({ userInfo: state.userInfo, menuTitle:state.menuTitle }), {
-  deleteUserInfo,saveMenuTitle
+  deleteUserInfo,saveMenuTitle,deleteMenuTitle
 })(Header);

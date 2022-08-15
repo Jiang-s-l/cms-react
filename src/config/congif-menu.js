@@ -6,14 +6,22 @@ import {
     UserOutlined,
   } from "@ant-design/icons";
   
-function getItem(label, key, icon, children, type) {
-    return {
-      key,
-      icon,
-      children,
-      label,
-      type,
-    };
+function getItem(label, key, icon, children) {
+    if(children){
+      return {
+        key,
+        icon,
+        children,
+        label,
+      };
+    }else{
+      return {
+        key,
+        icon,
+        label,
+      };
+    }
+    
   }
   
 const items = [
@@ -30,5 +38,6 @@ const items = [
       getItem("饼图", "pie"),
     ]),
   ];
+  console.log("配置页面值",items)
 
   export default  items
